@@ -15,4 +15,13 @@
 //     setInterval(update, 1000);
 // });
 
+const cityInput = document.getElementById("input-city");
+const citySearchEl = document.getElementById("btn-search");
+const clearCityEl = document.getElementById("history-clear");
+const cityName = document.getElementById("city");
+const currentTemperature = document.getElementById("temperature");
+const cityHumidity = document.getElementById("humidity")
+const cityPicture = document.getElementById("city-pic");
+const cityWind = document.getElementById("wind-speed");
+const cityUV = document.getElementById("uv-index");
 
