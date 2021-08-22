@@ -16,10 +16,10 @@ $(document).ready(function(){
 });
 
 function generateWeather() {
-    const cityInput = document.getElementById("input-city");
+    const cityInputEl = document.getElementById("input-city");
     const citySearchEl = document.getElementById("btn-search");
     const clearCityEl = document.getElementById("history-clear");
-    const cityNameEl = document.getElementById("city");
+    const cityNameEl = document.getElementById("name-city");
     const cityTemperatureEl = document.getElementById("temperature");
     const cityHumidityEl = document.getElementById("humidity")
     const cityPictureEl = document.getElementById("city-pic");
@@ -29,19 +29,24 @@ function generateWeather() {
     var todayweatherEl = document.getElementById("todays-weather");
     let searchHistory = JSON.parse(localStorage.getItem("search")) || [];
 
+    //Function that displays the temperature with degress fahrenheit
+    function k2f(K) {
+        return Math.floor((K - 273.15) * 1.8 + 32);
+    }
+
     //Assigning a variable to use as the API Key
     const APIkey = "04d672453e2ffd5f0ccd96121758e383";
 
     function fetchWeather(cityName) {
         let queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=" + APIkey;
-        axios.getElementById(queryURL)
+        axios.get(queryURL)
             .then(function (response) {
                 todayweatherEl.classList.remove("d-none");
 
                 const currentDate = new Date(response.data.dt * 1000);
                 const day = currentDate.getDate();
                 const month = currentDate.getMonth() + 1;
-                const year = currentData.getFullYear();
+                const year = currentDate.getFullYear();
                 cityNameEl.innerHTML = response.data.name + " (" + month +"/" + day + "/" + year + ") ";
                 let weatherPic = response.data.weather[0].icon;
                 cityPictureEl.setAttribute("src", "https://openweathermap.or/img/wn/" + weatherPic + "@2x.png");
@@ -75,6 +80,15 @@ function generateWeather() {
 
             })
     };
+
+
+    citySearchEl.addEventListener("click", function() {
+        const searchInfo = cityInputEl.value;
+        fetchWeather(searchInfo);
+        // searchHistory.push(searchInfo);
+        // localStorage.getItem("search", JSON.stringify(searchHistory));
+        // displaysearchHistory();
+    })
 }
 
 generateWeather();
