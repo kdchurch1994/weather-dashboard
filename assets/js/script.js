@@ -15,13 +15,23 @@ $(document).ready(function(){
     setInterval(update, 1000);
 });
 
-const cityInput = document.getElementById("input-city");
-const citySearchEl = document.getElementById("btn-search");
-const clearCityEl = document.getElementById("history-clear");
-const cityName = document.getElementById("city");
-const currentTemperature = document.getElementById("temperature");
-const cityHumidity = document.getElementById("humidity")
-const cityPicture = document.getElementById("city-pic");
-const cityWind = document.getElementById("wind-speed");
-const cityUV = document.getElementById("uv-index");
+function generateWeather() {
+    const cityInput = document.getElementById("input-city");
+    const citySearchEl = document.getElementById("btn-search");
+    const clearCityEl = document.getElementById("history-clear");
+    const cityName = document.getElementById("city");
+    const currentTemperature = document.getElementById("temperature");
+    const cityHumidity = document.getElementById("humidity")
+    const cityPicture = document.getElementById("city-pic");
+    const cityWind = document.getElementById("wind-speed");
+    const cityUV = document.getElementById("uv-index");
+    var fiveDayEl = document.getElementById("fiveday-header");
+    var todayweatherEl = document.getElementById("todays-weather");
+
+    //Assigning a variable to use as the API Key
+    const APIkey = "04d672453e2ffd5f0ccd96121758e383";
+
+
+
+}
 
