@@ -19,17 +19,42 @@ function generateWeather() {
     const cityInput = document.getElementById("input-city");
     const citySearchEl = document.getElementById("btn-search");
     const clearCityEl = document.getElementById("history-clear");
-    const cityName = document.getElementById("city");
-    const currentTemperature = document.getElementById("temperature");
-    const cityHumidity = document.getElementById("humidity")
-    const cityPicture = document.getElementById("city-pic");
-    const cityWind = document.getElementById("wind-speed");
-    const cityUV = document.getElementById("uv-index");
+    const cityNameEl = document.getElementById("city");
+    const cityTemperatureEl = document.getElementById("temperature");
+    const cityHumidityEl = document.getElementById("humidity")
+    const cityPictureEl = document.getElementById("city-pic");
+    const cityWindEl = document.getElementById("wind-speed");
+    const cityUVEl = document.getElementById("uv-index");
     var fiveDayEl = document.getElementById("fiveday-header");
     var todayweatherEl = document.getElementById("todays-weather");
+    let searchHistory = JSON.parse(localStorage,getItem("search")) || [];
 
     //Assigning a variable to use as the API Key
     const APIkey = "04d672453e2ffd5f0ccd96121758e383";
+
+    function fetchWeather(cityName) {
+        let queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=" + APIkey;
+        axios.getElementById(queryURL)
+            .then(function (response) {
+                todayweatherEl.classList.remove("d-none");
+
+                const currentDate = new Date(response.data.dt * 1000);
+                const day = currentDate.getDate();
+                const month = currentDate.getMonth() + 1;
+                const year = currentData.getFullYear();
+                nameEl.innerHTML = response.data.name + " (" + month +"/" + day + "/" + year + ") ";
+                let weatherPic = response.data.weather[0].icon;
+                cityPictureEl.setAttribute("src", "https://openweathermap.or/img/wn/" + weatherPic + "@2x.png");
+                cityPictureEl.setAttribute("alt", response.data.name + " (" + month + "/" + day + "/" + year + ") ";
+                cityTemperatureEl.innerHTML = "Temperature: " + k2f(response.data.main.temp) + " &#176F";
+                cityHumidityEl.innerHTML = "Humidity: " + response.data.main.humidity + "%";
+                currentWindEl.innerHTML = "Wind Speed: " + response.data.wind.speed + " MPH";
+
+                
+
+
+            }
+    }
 
 
 
