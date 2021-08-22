@@ -27,7 +27,7 @@ function generateWeather() {
     const cityUVEl = document.getElementById("uv-index");
     var fiveDayEl = document.getElementById("fiveday-header");
     var todayweatherEl = document.getElementById("todays-weather");
-    let searchHistory = JSON.parse(localStorage,getItem("search")) || [];
+    let searchHistory = JSON.parse(localStorage.getItem("search")) || [];
 
     //Assigning a variable to use as the API Key
     const APIkey = "04d672453e2ffd5f0ccd96121758e383";
@@ -42,21 +42,40 @@ function generateWeather() {
                 const day = currentDate.getDate();
                 const month = currentDate.getMonth() + 1;
                 const year = currentData.getFullYear();
-                nameEl.innerHTML = response.data.name + " (" + month +"/" + day + "/" + year + ") ";
+                cityNameEl.innerHTML = response.data.name + " (" + month +"/" + day + "/" + year + ") ";
                 let weatherPic = response.data.weather[0].icon;
                 cityPictureEl.setAttribute("src", "https://openweathermap.or/img/wn/" + weatherPic + "@2x.png");
-                cityPictureEl.setAttribute("alt", response.data.name + " (" + month + "/" + day + "/" + year + ") ";
+                cityPictureEl.setAttribute("alt", response.data.weather[0].description); 
                 cityTemperatureEl.innerHTML = "Temperature: " + k2f(response.data.main.temp) + " &#176F";
                 cityHumidityEl.innerHTML = "Humidity: " + response.data.main.humidity + "%";
-                currentWindEl.innerHTML = "Wind Speed: " + response.data.wind.speed + " MPH";
+                cityWindEl.innerHTML = "Wind Speed: " + response.data.wind.speed + " MPH";
 
-                
+                //Retrieve UV Index
+                let lat = response.data.coord.lat;
+                let lon = response.data.coord.lon;
+                let UVQueryURL = "https://api.openweathermap.org/data/2.5/uvi/forecast?lat=" + lat + "&lon=" + lon + "&appid" + APIkey + "&cnt=1";
+                axios.get(UVQueryURL)
+                    .then(function (response) {
+                        let UVindex = document.createElement("span");
 
+                        //Displays green when UV index is good, shows yellow when higher than good but not dangerous, and shows red when UV index is dangerously high
+                        if (response.data[0].value < 4) {
+                            UVindex.setAttribute("class", "badge badge-success");
+                        }
+                        else if (response.data[0].value < 8) {
+                            UVindex.setAttribute("class", "badge badge-warning");
+                        }
+                        else {
+                            UVindex.setAttribute("class", "badge badge-danger");
+                        }
+                        UVindex.innerHTML = response.data[0].value;
+                        cityUVEl.innerHTML = "UV Index: ";
+                        cityUVEl.append(UVIndex);
+                    });
 
-            }
-    }
-
-
-
+            })
+    };
 }
+
+generateWeather();
 
