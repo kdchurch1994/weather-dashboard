@@ -78,17 +78,59 @@ function generateWeather() {
                         cityUVEl.append(UVIndex);
                     });
 
-            })
-    };
+                    
+                //Get the next 5 days of forecast for the search city
+                let cityID = response.data.cityID;
+                let forecastQueryURL =  "https://api.openweathermap.org/data/2.5/forecast?id=" + cityID + "&appid=" + APIkey;
+                axios.get(forecastQueryURL)
+                    .then(function (response) {
+                        fiveDayEl.classList.remove("d-none");
 
+                        // This code includes a for loop that will parse the previous response data and provide the 5 day forecast
+                        const weatherEls = document.querySelectorAll(".weather");
+                        for (i =0; i < weatherEls.length; i++) {
+                            weatherEls[i].innerHTML = "";
+                            const weatherIndex = i * 8 + 4;
+                            const weatherDate = new Date (response.data.list[weatherIndex].dt * 1000);
+                            const weatherDay = weatherDate.getDate();
+                            const weatherMonth = weatherDate.getMonth();
+                            const weatherYear = weather.getFullYear();
+                            const weatherDateEl = document.createElement("p")
+                            weatherDateEl.setAttribute("class", "mt-3 mb-0 weather-date");
+                            weatherDateEl.innerHTML = weatherMonth + "/" + weatherDay + "/" + weatherYear;
+                            weatherEls[i].append(weatherDateEl);
 
+                            // add the current weather icon image to the weatherEls
+                            const weatherImgEl = document.createElement("img");
+                            weatherImgEl.setAttribute("src", "https://openweathermap.org/img/wn/" + response.data.list[weatherIndex].weather[0].icon + "@2x.png");
+                            weatherImgEl.setAttribute("alt", response.data.list[weatherIndex].weather[0].description);
+                            weatherEls[i].append(weatherImgEl);
+
+                            // add element to display the temperature of each day
+                            const weatherTempEl = document.createElement("p");
+                            weatherTempEl. innerHTML = "Temperature: " + k2f(response.data.list[weatherIndex].main.temp) + " &#176F";
+                            weatherEls[i].append (weatherTempEl);
+
+                            // add element to display the humidity for each day
+                            const weatherHumidityEl = document.createElement("P");
+                            weatherHumidityEl = "Humidity: " + response.data.list[weatherIndex].main.humidity + "%";
+                            weatherEls[i].append(forecastHumidityEl);
+                        }
+                    })
+
+            });
+    }
+    
+    // Get data from local storage
     citySearchEl.addEventListener("click", function() {
         const searchInfo = cityInputEl.value;
         fetchWeather(searchInfo);
-        // searchHistory.push(searchInfo);
-        // localStorage.getItem("search", JSON.stringify(searchHistory));
-        // displaysearchHistory();
+        searchHistory.push(searchInfo);
+        localStorage.getItem("search", JSON.stringify(searchHistory));
+        displaysearchHistory();
     })
+
+    
 }
 
 generateWeather();
