@@ -3,9 +3,10 @@
 }
 
 .container-fluid h1 {
-    font-size: 50px;
+    font-size: 70px;
 }
 
-.container-fluid span {
-    font-size: 30px;
+.container-fluid h2 {
+    font-size: 40px;
 }
+
