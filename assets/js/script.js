@@ -163,10 +163,10 @@ function generateWeather() {
             const searchHistoryItem = document.createElement("input");
             searchHistoryItem.setAttribute("type", "text");
             searchHistoryItem.setAttribute("readonly", true);
-            searchHistoryItem.setAttribute("class", "form-control d-block bg-white");
+            searchHistoryItem.setAttribute("class", "form-control bg-white");
             searchHistoryItem.setAttribute("value", searchHistory[i]);
             searchHistoryItem.addEventListener("click", function () {
-                fetchWeather(searchHistory[searchHistory.length - 1]);
+                fetchWeather(searchHistoryItem.value);
             })
             searchHistoryEl.append(searchHistoryItem);
         }
