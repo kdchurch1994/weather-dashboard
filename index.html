@@ -20,7 +20,7 @@
 
     <div class="container-fluid">
         <div class="row">
-            <div class="col-4 bg-light">
+            <div class="col-3 bg-light">
                 <h2 class="search-city mt-1">Search for a City</h2>
                 <div class="input-group mb-3">
                     <input id="input-city" type="text" class="form-control" placeholder="Please enter a city name" aria-label="Please enter a city name">
@@ -33,38 +33,40 @@
                 <button class="btn btn-primary mb-3" type="button" id="history-clear">Clear History</button>
                 <form id="search-history"></form>
             </div>
-
-            <div class="col-8">
+            <div class="col-9">
                 <div class="row mr-0">
-                    <div class="col-12 city-card m-3" id="todays-weather">
+                    <div class="col-12 city-card m-3 d-none" id="todays-weather">
                         <div class="card-data">
-                            <h2 id="name-city align-middle">City Name</h2>
+                            <h3 id="city-name" class="city-name align-middle"></h3>
                             <img id="city-pic" alt="">
                             <p id="temperature"></p>
                             <p id="humidity"></p>
                             <p id="wind-speed"></p>
-                            <p id="uv-index"></p>
+                            <p id="uvIndex">UV Index: 
+                                <span id="badge" class="badge"></span>
+                            </p>
                         </div>
                     </div>
                 </div>
-
-                <div class="row d-none" id="fiveday-header">
+                 <div class="row d-none" id="fiveday-header">
                     <div class="col-12">
                         <h3>Five-Day Forecast</h3>
                     </div>
+                
+                    </div class="row">
+                        <div class="col-2 weather bg-primary text-white m-1"></div>
+                        <div class="col-2 weather bg-primary text-white m-1"></div>
+                        <div class="col-2 weather bg-primary text-white m-1"></div>
+                        <div class="col-2 weather bg-primary text-white m-1"></div>
+                        <div class="col-2 weather bg-primary text-white m-1"></div>
+                    </div>
                 </div>
-                <div class="col-md-2 weather bg-primary text-white m-2 rounded">1</div>
-                <div class="col-md-2 weather bg-primary text-white m-2 rounded">2</div>
-                <div class="col-md-2 weather bg-primary text-white m-2 rounded">3</div>
-                <div class="col-md-2 weather bg-primary text-white m-2 rounded">4</div>
-                <div class="col-md-2 weather bg-primary text-white m-2 rounded">5</div>
             </div>
         </div>
     </div>
-
+    
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>   
     <script src='./assets/js/script.js'></script>
 </body>
 </html>

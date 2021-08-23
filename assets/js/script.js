@@ -19,12 +19,11 @@ function generateWeather() {
     const cityInputEl = document.getElementById("input-city");
     const citySearchEl = document.getElementById("btn-search");
     const clearCityEl = document.getElementById("history-clear");
-    const cityNameEl = document.getElementById("name-city");
+    const nameEl = document.getElementById("city-name");
     const cityTemperatureEl = document.getElementById("temperature");
     const cityHumidityEl = document.getElementById("humidity")
     const cityPictureEl = document.getElementById("city-pic");
     const cityWindEl = document.getElementById("wind-speed");
-    const cityUVEl = document.getElementById("uv-index");
     const searchHistoryEl = document.getElementById("search-history");
     var fiveDayEl = document.getElementById("fiveday-header");
     var todayweatherEl = document.getElementById("todays-weather");
@@ -40,62 +39,76 @@ function generateWeather() {
 
     function fetchWeather(cityName) {
         let queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=" + APIkey;
-        axios.get(queryURL)
+        fetch(queryURL)
             .then(function (response) {
+                return response.json();
+            })
+            .then(function (response) {
+                console.log(response)
                 todayweatherEl.classList.remove("d-none");
 
-                const currentDate = new Date(response.data.dt * 1000);
+                const currentDate = new Date(response.dt * 1000);
                 const day = currentDate.getDate();
                 const month = currentDate.getMonth() + 1;
                 const year = currentDate.getFullYear();
-                cityNameEl.innerHTML = response.data.name + " (" + month +"/" + day + "/" + year + ") ";
-                let weatherPic = response.data.weather[0].icon;
-                cityPictureEl.setAttribute("src", "https://openweathermap.or/img/wn/" + weatherPic + "@2x.png");
-                cityPictureEl.setAttribute("alt", response.data.weather[0].description); 
-                cityTemperatureEl.innerHTML = "Temperature: " + k2f(response.data.main.temp) + " &#176F";
-                cityHumidityEl.innerHTML = "Humidity: " + response.data.main.humidity + "%";
-                cityWindEl.innerHTML = "Wind Speed: " + response.data.wind.speed + " MPH";
+                nameEl.innerHTML = response.name + " (" + month + "/" + day + "/" + year + ") ";
+                let weatherPic = response.weather[0].icon;
+                cityPictureEl.setAttribute("src", "https://openweathermap.org/img/wn/" + weatherPic + "@2x.png");
+                cityPictureEl.setAttribute("alt", response.weather[0].description); 
+                cityTemperatureEl.innerHTML = "Temperature: " + k2f(response.main.temp) + " &#176F";
+                cityHumidityEl.innerHTML = "Humidity: " + response.main.humidity + "%";
+                cityWindEl.innerHTML = "Wind Speed: " + response.wind.speed + " MPH";
 
                 //Retrieve UV Index
-                let lat = response.data.coord.lat;
-                let lon = response.data.coord.lon;
-                let UVQueryURL = "https://api.openweathermap.org/data/2.5/uvi/forecast?lat=" + lat + "&lon=" + lon + "&appid" + APIkey + "&cnt=1";
-                axios.get(UVQueryURL)
+                let lat = response.coord.lat;
+                let lon = response.coord.lon;
+                let UVQueryURL = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&appid=" + APIkey + "&cnt=1";
+                fetch(UVQueryURL)
                     .then(function (response) {
-                        let UVindex = document.createElement("span");
+                        return response.json()
+                    })
+                    .then(function (response) {
+                        console.log(response)
+                        let UVindex = document.querySelector(".badge");
+
+                        UVindex.textContent = response.current.uvi
 
                         //Displays green when UV index is good, shows yellow when higher than good but not dangerous, and shows red when UV index is dangerously high
-                        if (response.data[0].value < 4) {
-                            UVindex.setAttribute("class", "badge badge-success");
+                        if (response.current.uvi < 4) {
+                            UVindex.setAttribute("class", "bg-success badge");
                         }
-                        else if (response.data[0].value < 8) {
-                            UVindex.setAttribute("class", "badge badge-warning");
+                        else if (response.current.uvi < 8) {
+                            UVindex.setAttribute("class", "bg-warning badge");
                         }
                         else {
-                            UVindex.setAttribute("class", "badge badge-danger");
+                            UVindex.setAttribute("class", "badge-danger badge");
                         }
-                        UVindex.innerHTML = response.data[0].value;
-                        cityUVEl.innerHTML = "UV Index: ";
-                        cityUVEl.append(UVIndex);
+                        console.log(response.current.uvi);
+                        
                     });
 
                     
                 //Get the next 5 days of forecast for the search city
-                let cityID = response.data.cityID;
+                let cityID = response.id;
                 let forecastQueryURL =  "https://api.openweathermap.org/data/2.5/forecast?id=" + cityID + "&appid=" + APIkey;
-                axios.get(forecastQueryURL)
+                fetch(forecastQueryURL)
+
+                    .then( function (response) {
+                        return response.json()
+                    })
                     .then(function (response) {
                         fiveDayEl.classList.remove("d-none");
+                        console.log(response)
 
                         // This code includes a for loop that will parse the previous response data and provide the 5 day forecast
                         const weatherEls = document.querySelectorAll(".weather");
                         for (i =0; i < weatherEls.length; i++) {
                             weatherEls[i].innerHTML = "";
                             const weatherIndex = i * 8 + 4;
-                            const weatherDate = new Date (response.data.list[weatherIndex].dt * 1000);
+                            const weatherDate = new Date (response.list[weatherIndex].dt * 1000);
                             const weatherDay = weatherDate.getDate();
-                            const weatherMonth = weatherDate.getMonth();
-                            const weatherYear = weather.getFullYear();
+                            const weatherMonth = weatherDate.getMonth() + 1;
+                            const weatherYear = weatherDate.getFullYear();
                             const weatherDateEl = document.createElement("p")
                             weatherDateEl.setAttribute("class", "mt-3 mb-0 weather-date");
                             weatherDateEl.innerHTML = weatherMonth + "/" + weatherDay + "/" + weatherYear;
@@ -103,19 +116,23 @@ function generateWeather() {
 
                             // add the current weather icon image to the weatherEls
                             const weatherImgEl = document.createElement("img");
-                            weatherImgEl.setAttribute("src", "https://openweathermap.org/img/wn/" + response.data.list[weatherIndex].weather[0].icon + "@2x.png");
-                            weatherImgEl.setAttribute("alt", response.data.list[weatherIndex].weather[0].description);
+                            weatherImgEl.setAttribute("src", "https://openweathermap.org/img/wn/" + response.list[weatherIndex].weather[0].icon + "@2x.png");
+                            weatherImgEl.setAttribute("alt", response.list[weatherIndex].weather[0].description);
                             weatherEls[i].append(weatherImgEl);
 
                             // add element to display the temperature of each day
                             const weatherTempEl = document.createElement("p");
-                            weatherTempEl. innerHTML = "Temperature: " + k2f(response.data.list[weatherIndex].main.temp) + " &#176F";
+                            weatherTempEl.innerHTML = "Temperature: " + k2f(response.list[weatherIndex].main.temp) + " &#176F";
                             weatherEls[i].append (weatherTempEl);
 
                             // add element to display the humidity for each day
-                            const weatherHumidityEl = document.createElement("P");
-                            weatherHumidityEl = "Humidity: " + response.data.list[weatherIndex].main.humidity + "%";
-                            weatherEls[i].append(forecastHumidityEl);
+                            const weatherHumidityEl = document.createElement("p");
+                            weatherHumidityEl.innerHTML = "Humidity: " + response.list[weatherIndex].main.humidity + "%";
+                            weatherEls[i].append(weatherHumidityEl);
+
+                            const weatherWindEl = document.createElement("p");
+                            weatherWindEl.innerHTML = "Wind Speed: " + response.list[weatherIndex].wind.speed + " MPH";
+                            weatherEls[i].append(weatherWindEl);
                         }
                     })
 
