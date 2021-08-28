@@ -10,6 +10,7 @@
     font-size: 40px;
 }
 
+/*Displays the five day forecast on the same line using flexboxes*/
 .fiveday-forecast {
     display: flex;
     align-items: center;

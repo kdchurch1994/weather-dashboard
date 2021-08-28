@@ -10,17 +10,17 @@
     <title>Weather Dashboard</title>
 </head>
 <body>
-    <header class="container-fluid bg-primary"> <!---->
-            <h1 class="container-fluid text-center text-white">Weather Dashboard</h1> <!---->
+    <header class="container-fluid bg-primary"> <!--bg-primary is using bootstrap to display the header background as blue; container-fluid allows the container to take up the whole width of the webpage-->
+            <h1 class="container-fluid text-center text-white">Weather Dashboard</h1> <!--container-fluid allows the container to take up the whole width of the webpage; text-center uses bootstrap to center the text, and text-white uses bootstrap to display the text using a white color-->
     </header>
 
-    <div class="container-fluid bg-primary">
-        <h2 class="container-fluid text-center text-white" id="currentDay"></h2>
+    <div class="container-fluid bg-primary"> <!--bg-primary is using bootstrap to display the header background as blue-->
+        <h2 class="container-fluid text-center text-white" id="currentDay"></h2> <!--container-fluid allows the container to take up the whole width of the webpage;text-center uses bootstrap to center the text, and text-white uses bootstrap to display the text using a white color -->
     </div>
 
-    <div class="container-fluid">
+    <div class="container-fluid"> <!--container-fluid allows the container to take up the whole width of the webpage-->
         <div class="row">
-            <div class="col-3 bg-light">
+            <div class="col-3 bg-light"> <!--bg-light uses bootstrap to display a light background color that is a light white-ish gray.-->
                 <h2 class="search-city mt-1">Search for a City</h2>
                 <div class="input-group mb-3">
                     <input id="input-city" type="text" class="form-control" placeholder="Please enter a city name" aria-label="Please enter a city name">
@@ -55,11 +55,11 @@
                 </div>    
 
                 </div class="row fiveday-forecast">
-                    <div class="col-2 weather bg-primary text-white m-1"></div>
-                    <div class="col-2 weather bg-primary text-white m-1"></div>
-                    <div class="col-2 weather bg-primary text-white m-1"></div>
-                    <div class="col-2 weather bg-primary text-white m-1"></div>
-                    <div class="col-2 weather bg-primary text-white m-1"></div>
+                    <div class="col-2 weather bg-primary text-white m-2"></div> <!--bg-primary is using bootstrap to display a blue background for each of the weather cards; text-white is being used to display the text in a white colored font-->
+                    <div class="col-2 weather bg-primary text-white m-2"></div> <!--bg-primary is using bootstrap to display a blue background for each of the weather cards; text-white is being used to display the text in a white colored font-->
+                    <div class="col-2 weather bg-primary text-white m-2"></div> <!--bg-primary is using bootstrap to display a blue background for each of the weather cards; text-white is being used to display the text in a white colored font-->
+                    <div class="col-2 weather bg-primary text-white m-2"></div> <!--bg-primary is using bootstrap to display a blue background for each of the weather cards; text-white is being used to display the text in a white colored font-->
+                    <div class="col-2 weather bg-primary text-white m-2"></div> <!--bg-primary is using bootstrap to display a blue background for each of the weather cards; text-white is being used to display the text in a white colored font-->
                 </div>
             </div>
         </div>
